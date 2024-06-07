@@ -97,7 +97,7 @@ The application consists of the following components:
 
 ## Demo
 
-[YouTube Demo](https://www.youtube.com/watch?v=x-hK-ZK9J-E)
+[YouTube Demo](https://youtu.be/MDeIGoIzg00)
 
 ## References
 
