@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tekstsummering</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Establish a connection to the server using Socket.IO
+            const socket = io.connect(`${location.protocol}//${document.domain}:${location.port}`);
+            
+            // Select the form and its elements
+            const form = document.querySelector('form');
+            const textInput = document.getElementById('text');
+            const summaryArea = document.getElementById('summary');
+            const summarizeButton = document.getElementById('summarizeButton');
+
+            // Add an event listener to handle form submission
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+                summaryArea.value = 'Oppsummerer...'; // Display a loading message
+                let fullSummary = ''; // Initialize a variable to store the summary
+                textInput.disabled = true; // Disable the text input
+                summarizeButton.disabled = true; // Disable the summarize button
+                // Emit the 'summarize' event to the server with the input text
+                socket.emit('summarize', {text: textInput.value});
+            });
+
+            // Listen for the 'response' event from the server
+            socket.on('response', function(data) {
+                fullSummary += data.content; // Append the incoming data to the summary
+                summaryArea.value = fullSummary; // Update the summary area with the new content
+                textInput.disabled = false; // Re-enable the text input
+                summarizeButton.disabled = false; // Re-enable the summarize button
+            });
+        });
+    </script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="w-full max-w-2xl p-5">
+        <form action="/" method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="text">
+                    Tekst å summere
+                </label>
+                <textarea id="text" name="text" rows="6" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required></textarea>
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="summary">
+                    Sammendrag
+                </label>
+                <textarea id="summary" name="summary" rows="6" disabled class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" aria-disabled="true"></textarea>
+            </div>
+            <div class="flex items-center justify-between">
+                <button id="summarizeButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                    Summer
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
