@@ -2,6 +2,10 @@
 
 A simple web application that uses a custom Llama model specifically tuned for Norwegian text by [RuterNorway](https://huggingface.co/RuterNorway/Llama-2-13b-chat-norwegian). The application allows the user to input text and receive a summarized version.
 
+## Demo
+
+[YouTube Demo](https://youtu.be/MDeIGoIzg00)
+
 ## Prerequisites
 
 ### Ollama
@@ -20,7 +24,7 @@ A simple web application that uses a custom Llama model specifically tuned for N
    - Create a model file with the following content:
 
      ```sh
-     # set the base model 
+     # set the base model
      FROM llama-2-13b-chat-norwegian.gguf
 
      # Set custom parameter values
@@ -94,10 +98,6 @@ The application consists of the following components:
 3. **Model Interaction**: The Flask server processes the input and sends it to the Ollama model for summarization.
 4. **Response Handling**: The Ollama model returns the summarized text to the Flask server.
 5. **Display Output**: The Flask server sends the summarized text back to the frontend, where it is displayed to the user.
-
-## Demo
-
-[YouTube Demo](https://youtu.be/MDeIGoIzg00)
 
 ## References
 
